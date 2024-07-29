@@ -35,6 +35,7 @@ public class RegisterUserView {
 	private JButton btnUserRegister_Right;
 	private JButton btnUserRegister_Edit;
 	private JButton btnUserRegister_Delete;
+	private JButton btnUserRegister_Save;
 
 	/**
 	 * Launch the application.
@@ -77,7 +78,7 @@ public class RegisterUserView {
 		
 		JPanel panelRegisterUser_Buttons = new JPanel();
 		panelRegisterUser_Buttons.setBackground(new Color(240, 240, 240));
-		panelRegisterUser_Buttons.setBounds(10, 11, 420, 63);
+		panelRegisterUser_Buttons.setBounds(10, 11, 471, 63);
 		panelRegisterUser.add(panelRegisterUser_Buttons);
 		panelRegisterUser_Buttons.setLayout(null);
 		
@@ -93,7 +94,7 @@ public class RegisterUserView {
 		btnUserRegister_Add.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUserRegister_Add.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Add.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Add.setBounds(85, 11, 47, 41);
+		btnUserRegister_Add.setBounds(83, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Add);
 		
 		btnUserRegister_Left = new JButton("");
@@ -101,7 +102,7 @@ public class RegisterUserView {
 		btnUserRegister_Left.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/left.png")));
 		btnUserRegister_Left.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Left.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Left.setBounds(151, 11, 47, 41);
+		btnUserRegister_Left.setBounds(148, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Left);
 		
 		btnUserRegister_Right = new JButton("");
@@ -109,7 +110,7 @@ public class RegisterUserView {
 		btnUserRegister_Right.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/right.png")));
 		btnUserRegister_Right.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Right.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Right.setBounds(217, 11, 47, 41);
+		btnUserRegister_Right.setBounds(213, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Right);
 		
 		btnUserRegister_Edit = new JButton("");
@@ -117,7 +118,7 @@ public class RegisterUserView {
 		btnUserRegister_Edit.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/edit.png")));
 		btnUserRegister_Edit.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Edit.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Edit.setBounds(283, 11, 47, 41);
+		btnUserRegister_Edit.setBounds(278, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Edit);
 		
 		btnUserRegister_Delete = new JButton("");
@@ -125,8 +126,16 @@ public class RegisterUserView {
 		btnUserRegister_Delete.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/delete.png")));
 		btnUserRegister_Delete.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Delete.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Delete.setBounds(349, 11, 47, 41);
+		btnUserRegister_Delete.setBounds(343, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Delete);
+		
+		btnUserRegister_Save = new JButton("");
+		btnUserRegister_Save.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnUserRegister_Save.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/save.png")));
+		btnUserRegister_Save.setBorder(new LineBorder(new Color(240, 240, 240)));
+		btnUserRegister_Save.setBackground(new Color(240, 240, 240));
+		btnUserRegister_Save.setBounds(408, 11, 47, 41);
+		panelRegisterUser_Buttons.add(btnUserRegister_Save);
 		
 		panelRegisterUser_DataUser = new JPanel();
 		panelRegisterUser_DataUser.setBackground(new Color(240, 240, 240));
