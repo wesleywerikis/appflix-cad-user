@@ -2,6 +2,7 @@ package br.com.appflix.register.user.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.com.appflix.dal.ModelConnection;
@@ -19,6 +20,32 @@ public class UserDao {
 			stmt.setString(4, user.getPassword());
 			stmt.executeUpdate();
 		}
+	}
+	
+	public static User getUserById(Long id) {
+		Connection connection = ModelConnection.getConnection();
+		if (connection != null) {
+			try {
+				String sql = "SELECT * FROM tb_users WHERE id = ?";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setLong(1, id);
+				ResultSet resultSet = statement.executeQuery();
+				if (resultSet.next()) {
+					User user = new User();
+					user.setId(resultSet.getLong("id"));
+					user.setName(resultSet.getString("name"));
+					user.setUsername(resultSet.getString("username"));
+					user.setPassword(resultSet.getString("password"));
+					user.setEmail(resultSet.getString("email"));
+					return user;
+				}
+			} catch (SQLException e) {
+				System.err.println("Error getting user by ID from database: " + e.getMessage());
+			} finally {
+				ModelConnection.closeConnection();
+			}
+		}
+		return null;
 	}
 
 }
