@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.text.NumberFormat;
 
@@ -13,10 +15,14 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.NumberFormatter;
+
+import br.com.appflix.register.user.controller.UserController;
+
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 import java.awt.Cursor;
 import javax.swing.ImageIcon;
@@ -42,6 +48,8 @@ public class RegisterUserView {
 	private JButton btnUserRegister_Delete;
 	private JButton btnUserRegister_Save;
 
+	private UserController userController;
+
 	/**
 	 * Launch the application.
 	 */
@@ -62,6 +70,7 @@ public class RegisterUserView {
 	 * Create the application.
 	 */
 	public RegisterUserView() {
+		userController = new UserController();
 		initialize();
 	}
 
@@ -74,19 +83,19 @@ public class RegisterUserView {
 		frameUserRegister.setBounds(100, 100, 590, 296);
 		frameUserRegister.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameUserRegister.getContentPane().setLayout(null);
-		
+
 		JPanel panelRegisterUser = new JPanel();
 		panelRegisterUser.setBackground(new Color(240, 240, 240));
 		panelRegisterUser.setBounds(0, 0, 574, 259);
 		frameUserRegister.getContentPane().add(panelRegisterUser);
 		panelRegisterUser.setLayout(null);
-		
+
 		JPanel panelRegisterUser_Buttons = new JPanel();
 		panelRegisterUser_Buttons.setBackground(new Color(240, 240, 240));
 		panelRegisterUser_Buttons.setBounds(10, 11, 471, 63);
 		panelRegisterUser.add(panelRegisterUser_Buttons);
 		panelRegisterUser_Buttons.setLayout(null);
-			
+
 		JFormattedTextField formattedTextFieldUserRegister_Search = new JFormattedTextField();
 		formattedTextFieldUserRegister_Search.setForeground(new Color(57, 62, 70));
 		formattedTextFieldUserRegister_Search.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -95,11 +104,14 @@ public class RegisterUserView {
 		formattedTextFieldUserRegister_Search.setHorizontalAlignment(SwingConstants.CENTER);
 		formattedTextFieldUserRegister_Search.setBounds(13, 11, 47, 41);
 		panelRegisterUser_Buttons.add(formattedTextFieldUserRegister_Search);
-		
+
 		JButton btnUserRegister_Add = new JButton("");
 		btnUserRegister_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				formattedTextFieldUserRegister_Search.setEnabled(false);
+
+				disableAndEnableButtons();
+
 				enableTextFieldDataUser();
 			}
 		});
@@ -109,66 +121,79 @@ public class RegisterUserView {
 		btnUserRegister_Add.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Add.setBounds(83, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Add);
-		
+
 		btnUserRegister_Left = new JButton("");
 		btnUserRegister_Left.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnUserRegister_Left.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/left.png")));
+		btnUserRegister_Left
+				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/left.png")));
 		btnUserRegister_Left.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Left.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Left.setBounds(148, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Left);
-		
+
 		btnUserRegister_Right = new JButton("");
 		btnUserRegister_Right.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnUserRegister_Right.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/right.png")));
+		btnUserRegister_Right
+				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/right.png")));
 		btnUserRegister_Right.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Right.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Right.setBounds(213, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Right);
-		
+
 		btnUserRegister_Edit = new JButton("");
+		btnUserRegister_Edit.setEnabled(false);
 		btnUserRegister_Edit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnUserRegister_Edit.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/edit.png")));
+		btnUserRegister_Edit
+				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/edit.png")));
 		btnUserRegister_Edit.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Edit.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Edit.setBounds(278, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Edit);
-		
+
 		btnUserRegister_Delete = new JButton("");
+		btnUserRegister_Delete.setEnabled(false);
 		btnUserRegister_Delete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnUserRegister_Delete.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/delete.png")));
+		btnUserRegister_Delete
+				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/delete.png")));
 		btnUserRegister_Delete.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Delete.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Delete.setBounds(343, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Delete);
-		
+
 		btnUserRegister_Save = new JButton("");
+		btnUserRegister_Save.setEnabled(false);
 		btnUserRegister_Save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String name = textFieldUserRegister_Name.getText();
 				String username = textFieldUserRegister_Username.getText();
 				String password = new String(passwordFieldUserRegister_Password.getPassword());
 				String confirmPassword = new String(passwordFieldUserRegister_ConfirmPassword.getPassword());
 				String email = textFieldUserRegister_Email.getText();
-				
-				System.out.println("Dados do Usuário: " + name + " | " + username + " | " + password + " | " + confirmPassword + " | " + email);
-				
+
+				System.out.println("Dados do Usuário: " + name + " | " + username + " | " + password + " | "
+						+ confirmPassword + " | " + email);
+
+				validateAndFocusField(name, textFieldUserRegister_Name, username, textFieldUserRegister_Username,
+						password, passwordFieldUserRegister_Password, confirmPassword,
+						passwordFieldUserRegister_ConfirmPassword, email, textFieldUserRegister_Email);
+
 			}
 		});
 		btnUserRegister_Save.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnUserRegister_Save.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/save.png")));
+		btnUserRegister_Save
+				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/save.png")));
 		btnUserRegister_Save.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Save.setBackground(new Color(240, 240, 240));
 		btnUserRegister_Save.setBounds(408, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Save);
-		
+
 		panelRegisterUser_DataUser = new JPanel();
 		panelRegisterUser_DataUser.setBackground(new Color(240, 240, 240));
 		panelRegisterUser_DataUser.setBounds(10, 83, 554, 165);
 		panelRegisterUser.add(panelRegisterUser_DataUser);
 		panelRegisterUser_DataUser.setLayout(null);
-		
+
 		JLabel lblUserRegister_Name = new JLabel("Nome:");
 		lblUserRegister_Name.setBackground(new Color(240, 240, 240));
 		lblUserRegister_Name.setBounds(13, 25, 50, 14);
@@ -176,7 +201,7 @@ public class RegisterUserView {
 		lblUserRegister_Name.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblUserRegister_Name.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserRegister_Name.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-		
+
 		textFieldUserRegister_Name = new JTextField();
 		textFieldUserRegister_Name.setEnabled(false);
 		textFieldUserRegister_Name.setBounds(76, 22, 187, 20);
@@ -185,7 +210,7 @@ public class RegisterUserView {
 		textFieldUserRegister_Name.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));
 		textFieldUserRegister_Name.setBackground(new Color(240, 240, 240));
 		textFieldUserRegister_Name.setColumns(10);
-		
+
 		lblUserRegister_Username = new JLabel("Usuário:");
 		lblUserRegister_Username.setBackground(new Color(240, 240, 240));
 		lblUserRegister_Username.setBounds(276, 25, 61, 14);
@@ -193,7 +218,7 @@ public class RegisterUserView {
 		lblUserRegister_Username.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblUserRegister_Username.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserRegister_Username.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-		
+
 		textFieldUserRegister_Username = new JTextField();
 		textFieldUserRegister_Username.setEnabled(false);
 		textFieldUserRegister_Username.setBounds(350, 22, 187, 20);
@@ -202,7 +227,7 @@ public class RegisterUserView {
 		textFieldUserRegister_Username.setColumns(10);
 		textFieldUserRegister_Username.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));
 		textFieldUserRegister_Username.setBackground(new Color(240, 240, 240));
-		
+
 		lblUserRegister_Password = new JLabel("Senha:");
 		lblUserRegister_Password.setBackground(new Color(240, 240, 240));
 		lblUserRegister_Password.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -210,14 +235,14 @@ public class RegisterUserView {
 		lblUserRegister_Password.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		lblUserRegister_Password.setBounds(13, 71, 50, 14);
 		panelRegisterUser_DataUser.add(lblUserRegister_Password);
-		
+
 		passwordFieldUserRegister_Password = new JPasswordField();
 		passwordFieldUserRegister_Password.setEnabled(false);
 		passwordFieldUserRegister_Password.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));
 		passwordFieldUserRegister_Password.setBackground(new Color(240, 240, 240));
 		passwordFieldUserRegister_Password.setBounds(76, 68, 155, 20);
 		panelRegisterUser_DataUser.add(passwordFieldUserRegister_Password);
-		
+
 		lblUserRegister_ConfirmPassword = new JLabel("Confirme a Senha:");
 		lblUserRegister_ConfirmPassword.setBackground(new Color(240, 240, 240));
 		lblUserRegister_ConfirmPassword.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -225,14 +250,15 @@ public class RegisterUserView {
 		lblUserRegister_ConfirmPassword.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		lblUserRegister_ConfirmPassword.setBounds(254, 71, 117, 14);
 		panelRegisterUser_DataUser.add(lblUserRegister_ConfirmPassword);
-		
+
 		passwordFieldUserRegister_ConfirmPassword = new JPasswordField();
 		passwordFieldUserRegister_ConfirmPassword.setEnabled(false);
-		passwordFieldUserRegister_ConfirmPassword.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));
+		passwordFieldUserRegister_ConfirmPassword
+				.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(192, 192, 192)));
 		passwordFieldUserRegister_ConfirmPassword.setBackground(new Color(240, 240, 240));
 		passwordFieldUserRegister_ConfirmPassword.setBounds(382, 68, 155, 20);
 		panelRegisterUser_DataUser.add(passwordFieldUserRegister_ConfirmPassword);
-		
+
 		lblUserRegister_Email = new JLabel("E-mail:");
 		lblUserRegister_Email.setBackground(new Color(240, 240, 240));
 		lblUserRegister_Email.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -240,7 +266,7 @@ public class RegisterUserView {
 		lblUserRegister_Email.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		lblUserRegister_Email.setBounds(13, 119, 50, 14);
 		panelRegisterUser_DataUser.add(lblUserRegister_Email);
-		
+
 		textFieldUserRegister_Email = new JTextField();
 		textFieldUserRegister_Email.setEnabled(false);
 		textFieldUserRegister_Email.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
@@ -251,16 +277,46 @@ public class RegisterUserView {
 		panelRegisterUser_DataUser.add(textFieldUserRegister_Email);
 	}
 
+	protected void disableAndEnableButtons() {
+		btnUserRegister_Left.setEnabled(false);
+		btnUserRegister_Right.setEnabled(false);
+		btnUserRegister_Save.setEnabled(true);
+	}
+
 	protected void enableTextFieldDataUser() {
-		
+
 		textFieldUserRegister_Name.setEnabled(true);
 		textFieldUserRegister_Username.setEnabled(true);
 		passwordFieldUserRegister_Password.setEnabled(true);
 		passwordFieldUserRegister_ConfirmPassword.setEnabled(true);
 		textFieldUserRegister_Email.setEnabled(true);
-		
+
 		textFieldUserRegister_Name.requestFocus();
 	}
-	
-	
+
+	private void showErrorAndFocus(String message, JComponent component) {
+		JOptionPane.showMessageDialog(frameUserRegister, message, "Erro", JOptionPane.ERROR_MESSAGE);
+		component.requestFocus();
+	}
+
+	private void validateAndFocusField(String name, JTextField nameField, String username, JTextField usernameField,
+			String password, JPasswordField passwordField, String confirmPassword, JPasswordField confirmPasswordField,
+			String email, JTextField emailField) {
+		if (name.isEmpty()) {
+			showErrorAndFocus("Por favor, preencha todos os campos obrigatórios. (O Nome é obrigatório)", nameField);
+		} else if (username.isEmpty()) {
+			showErrorAndFocus("Por favor, preencha todos os campos obrigatórios. (O Usuário é obrigatório)",
+					usernameField);
+		} else if (password.isEmpty()) {
+			showErrorAndFocus("Por favor, preencha todos os campos obrigatórios. (A Senha é obrigatória)",
+					passwordField);
+		} else if (confirmPassword.isEmpty()) {
+			showErrorAndFocus(
+					"Por favor, preencha todos os campos obrigatórios. (A Confirmação da Senha é obrigatória)",
+					confirmPasswordField);
+		} else if (email.isEmpty()) {
+			showErrorAndFocus("Por favor, preencha todos os campos obrigatórios. (O E-mail é obrigatório)", emailField);
+		}
+	}
+
 }
