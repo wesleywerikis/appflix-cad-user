@@ -68,6 +68,28 @@ public class UserDao {
 		return null;
 	}
 
+	public static boolean updateUser(User user) {
+		Connection connection = ModelConnection.getConnection();
+		if (connection != null) {
+			try {
+				String sql = "UPDATE tb_users SET name=?, username=?, password=?, email=? WHERE id=?";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, user.getName());
+				statement.setString(2, user.getUsername());
+				statement.setString(3, user.getPassword());
+				statement.setString(4, user.getEmail());
+				statement.setLong(5, user.getId());
+				int rowsUpdated = statement.executeUpdate();
+				return rowsUpdated > 0;
+			} catch (SQLException e) {
+				System.err.println("Error updating user in database: " + e.getMessage());
+			} finally {
+				ModelConnection.closeConnection();
+			}
+		}
+		return false;
+	}
+
 	public static boolean deleteUser(Long id) {
 		Connection connection = ModelConnection.getConnection();
 		if (connection != null) {
