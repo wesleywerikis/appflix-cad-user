@@ -41,7 +41,7 @@ public class UserDao {
 			return -1;
 		}
 	}
-	
+
 	public static User getUserById(Long id) {
 		Connection connection = ModelConnection.getConnection();
 		if (connection != null) {
@@ -66,6 +66,24 @@ public class UserDao {
 			}
 		}
 		return null;
+	}
+
+	public static boolean deleteUser(Long id) {
+		Connection connection = ModelConnection.getConnection();
+		if (connection != null) {
+			try {
+				String sql = "DELETE FROM tb_users WHERE id = ?";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setLong(1, id);
+				int rowsDeleted = statement.executeUpdate();
+				return rowsDeleted > 0;
+			} catch (SQLException e) {
+				System.err.println("Error deleting user from database: " + e.getMessage());
+			} finally {
+				ModelConnection.closeConnection();
+			}
+		}
+		return false;
 	}
 
 }
