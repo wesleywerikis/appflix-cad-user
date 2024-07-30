@@ -221,6 +221,23 @@ public class RegisterUserView {
 					passwordFieldUserRegister_Password.requestFocus();
 					return;
 				}
+				
+				User user = new User();
+		        user.setName(name);
+		        user.setUsername(username);
+		        user.setPassword(password);
+		        user.setEmail(email);
+
+		        int userId = userController.addUser(user);
+
+		        if (userId != -1) {
+		            JOptionPane.showMessageDialog(frameUserRegister, "Usuário cadastrado com sucesso! ID: " + userId, " Sucesso",
+		                    JOptionPane.INFORMATION_MESSAGE);
+		            clearFieldsAndFocusOnIdTextField();
+		        } else {
+		            JOptionPane.showMessageDialog(frameUserRegister, "Falha ao cadastrar o usuário.", "Erro",
+		                    JOptionPane.ERROR_MESSAGE);
+		        }
 
 			}
 		});
