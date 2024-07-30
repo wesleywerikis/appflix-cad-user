@@ -31,6 +31,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegisterUserView {
 
@@ -50,10 +52,11 @@ public class RegisterUserView {
 	private JButton btnUserRegister_Edit;
 	private JButton btnUserRegister_Delete;
 	private JButton btnUserRegister_Save;
+	private JButton btnUserRegister_Add;
+	private JFormattedTextField formattedTextFieldUserRegister_Search;
 
 	private UserController userController;
-	private JFormattedTextField formattedTextFieldUserRegister_Search;
-	private JButton btnUserRegister_Add;
+	private JButton btnUserRegister_Clean;
 
 	/**
 	 * Launch the application.
@@ -97,7 +100,7 @@ public class RegisterUserView {
 
 		JPanel panelRegisterUser_Buttons = new JPanel();
 		panelRegisterUser_Buttons.setBackground(new Color(240, 240, 240));
-		panelRegisterUser_Buttons.setBounds(10, 11, 471, 63);
+		panelRegisterUser_Buttons.setBounds(10, 11, 507, 63);
 		panelRegisterUser.add(panelRegisterUser_Buttons);
 		panelRegisterUser_Buttons.setLayout(null);
 
@@ -131,7 +134,7 @@ public class RegisterUserView {
 		btnUserRegister_Add.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUserRegister_Add.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Add.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Add.setBounds(83, 11, 47, 41);
+		btnUserRegister_Add.setBounds(77, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Add);
 
 		btnUserRegister_Left = new JButton("");
@@ -140,7 +143,7 @@ public class RegisterUserView {
 				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/left.png")));
 		btnUserRegister_Left.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Left.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Left.setBounds(148, 11, 47, 41);
+		btnUserRegister_Left.setBounds(139, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Left);
 
 		btnUserRegister_Right = new JButton("");
@@ -149,17 +152,37 @@ public class RegisterUserView {
 				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/right.png")));
 		btnUserRegister_Right.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Right.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Right.setBounds(213, 11, 47, 41);
+		btnUserRegister_Right.setBounds(201, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Right);
 
 		btnUserRegister_Edit = new JButton("");
+		btnUserRegister_Edit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				enableTextFieldDataUser();
+				btnUserRegister_Save.setEnabled(true);
+			}
+		});
+		
+		btnUserRegister_Clean = new JButton("");
+		btnUserRegister_Clean.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clearFieldsAndFocusOnIdTextField();
+			}
+		});
+		btnUserRegister_Clean.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnUserRegister_Clean.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/clean.png")));
+		btnUserRegister_Clean.setBorder(new LineBorder(new Color(240, 240, 240)));
+		btnUserRegister_Clean.setBackground(new Color(240, 240, 240));
+		btnUserRegister_Clean.setBounds(263, 11, 47, 41);
+		panelRegisterUser_Buttons.add(btnUserRegister_Clean);
 		btnUserRegister_Edit.setEnabled(false);
 		btnUserRegister_Edit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUserRegister_Edit
 				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/edit.png")));
 		btnUserRegister_Edit.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Edit.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Edit.setBounds(278, 11, 47, 41);
+		btnUserRegister_Edit.setBounds(325, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Edit);
 
 		btnUserRegister_Delete = new JButton("");
@@ -169,7 +192,7 @@ public class RegisterUserView {
 				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/delete.png")));
 		btnUserRegister_Delete.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Delete.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Delete.setBounds(343, 11, 47, 41);
+		btnUserRegister_Delete.setBounds(387, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Delete);
 
 		btnUserRegister_Save = new JButton("");
@@ -206,7 +229,7 @@ public class RegisterUserView {
 				.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/save.png")));
 		btnUserRegister_Save.setBorder(new LineBorder(new Color(240, 240, 240)));
 		btnUserRegister_Save.setBackground(new Color(240, 240, 240));
-		btnUserRegister_Save.setBounds(408, 11, 47, 41);
+		btnUserRegister_Save.setBounds(449, 11, 47, 41);
 		panelRegisterUser_Buttons.add(btnUserRegister_Save);
 
 		panelRegisterUser_DataUser = new JPanel();
@@ -298,6 +321,29 @@ public class RegisterUserView {
 		panelRegisterUser_DataUser.add(textFieldUserRegister_Email);
 	}
 
+	protected void clearFieldsAndFocusOnIdTextField() {
+		formattedTextFieldUserRegister_Search.setText("");
+		textFieldUserRegister_Name.setText("");
+		textFieldUserRegister_Username.setText("");
+		passwordFieldUserRegister_Password.setText("");
+		passwordFieldUserRegister_ConfirmPassword.setText("");
+		textFieldUserRegister_Email.setText("");
+		
+		formattedTextFieldUserRegister_Search.requestFocus();
+		
+		disableEditDeleteSaveButtonsAndEnableTextFieldId();
+	}
+
+	private void disableEditDeleteSaveButtonsAndEnableTextFieldId() {
+		btnUserRegister_Edit.setEnabled(false);
+		btnUserRegister_Delete.setEnabled(false);
+		btnUserRegister_Save.setEnabled(false);
+		btnUserRegister_Left.setEnabled(true);
+		btnUserRegister_Right.setEnabled(true);
+		formattedTextFieldUserRegister_Search.setEnabled(true);
+		formattedTextFieldUserRegister_Search.requestFocus();
+	}
+
 	protected void disableAndEnableButtonsLeftRightAndSave() {
 		btnUserRegister_Left.setEnabled(false);
 		btnUserRegister_Right.setEnabled(false);
@@ -380,5 +426,4 @@ public class RegisterUserView {
 		btnUserRegister_Right.setEnabled(true);
 		btnUserRegister_Edit.setEnabled(true);
 	}
-
 }
