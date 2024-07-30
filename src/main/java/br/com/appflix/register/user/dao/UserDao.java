@@ -4,21 +4,41 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import br.com.appflix.dal.ModelConnection;
 import br.com.appflix.register.user.entity.User;
 
 public class UserDao {
 
-	public void insertUser(User user) throws SQLException {
-		String sql = "INSERT INTO tb_users (name, username, email, password) VALUES (?, ?, ?, ?)";
-		try (Connection connection = ModelConnection.getConnection();
-				PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setString(1, user.getName());
-			stmt.setString(2, user.getUsername());
-			stmt.setString(3, user.getEmail());
-			stmt.setString(4, user.getPassword());
-			stmt.executeUpdate();
+	public static int saveUser(User user) {
+		Connection connection = ModelConnection.getConnection();
+		if (connection != null) {
+			try {
+				String sql = "INSERT INTO tb_users (name, username, password, email) VALUES (?, ?, ?, ?)";
+				PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				statement.setString(1, user.getName());
+				statement.setString(2, user.getUsername());
+				statement.setString(3, user.getPassword());
+				statement.setString(4, user.getEmail());
+				statement.executeUpdate();
+
+				ResultSet rs = statement.getGeneratedKeys();
+				if (rs.next()) {
+					int userId = rs.getInt(1);
+					return userId;
+				} else {
+					return -1;
+				}
+			} catch (SQLException e) {
+				System.err.println("Error inserting user into database: " + e.getMessage());
+				return -1;
+			} finally {
+				ModelConnection.closeConnection();
+			}
+		} else {
+			System.err.println("Error connecting to database.");
+			return -1;
 		}
 	}
 	
