@@ -17,6 +17,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.text.NumberFormatter;
 
 import br.com.appflix.register.user.controller.UserController;
+import br.com.appflix.register.user.entity.User;
 
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
@@ -28,6 +29,8 @@ import java.awt.Cursor;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class RegisterUserView {
 
@@ -49,6 +52,8 @@ public class RegisterUserView {
 	private JButton btnUserRegister_Save;
 
 	private UserController userController;
+	private JFormattedTextField formattedTextFieldUserRegister_Search;
+	private JButton btnUserRegister_Add;
 
 	/**
 	 * Launch the application.
@@ -96,7 +101,14 @@ public class RegisterUserView {
 		panelRegisterUser.add(panelRegisterUser_Buttons);
 		panelRegisterUser_Buttons.setLayout(null);
 
-		JFormattedTextField formattedTextFieldUserRegister_Search = new JFormattedTextField();
+		formattedTextFieldUserRegister_Search = new JFormattedTextField();
+		formattedTextFieldUserRegister_Search.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String idUser = formattedTextFieldUserRegister_Search.getText();
+				loadUserInfoFromID(idUser);
+			}
+		});
 		formattedTextFieldUserRegister_Search.setForeground(new Color(57, 62, 70));
 		formattedTextFieldUserRegister_Search.setFont(new Font("Tahoma", Font.BOLD, 12));
 		formattedTextFieldUserRegister_Search.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(215, 215, 215)));
@@ -105,12 +117,12 @@ public class RegisterUserView {
 		formattedTextFieldUserRegister_Search.setBounds(13, 11, 47, 41);
 		panelRegisterUser_Buttons.add(formattedTextFieldUserRegister_Search);
 
-		JButton btnUserRegister_Add = new JButton("");
+		btnUserRegister_Add = new JButton("");
 		btnUserRegister_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				formattedTextFieldUserRegister_Search.setEnabled(false);
 
-				disableAndEnableButtons();
+				disableAndEnableButtonsLeftRightAndSave();
 
 				enableTextFieldDataUser();
 			}
@@ -177,6 +189,15 @@ public class RegisterUserView {
 				validateAndFocusField(name, textFieldUserRegister_Name, username, textFieldUserRegister_Username,
 						password, passwordFieldUserRegister_Password, confirmPassword,
 						passwordFieldUserRegister_ConfirmPassword, email, textFieldUserRegister_Email);
+
+				if (!password.equals(confirmPassword)) {
+					JOptionPane.showMessageDialog(frameUserRegister, "As senhas não coincidem.", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+					passwordFieldUserRegister_Password.setText("");
+					passwordFieldUserRegister_ConfirmPassword.setText("");
+					passwordFieldUserRegister_Password.requestFocus();
+					return;
+				}
 
 			}
 		});
@@ -277,7 +298,7 @@ public class RegisterUserView {
 		panelRegisterUser_DataUser.add(textFieldUserRegister_Email);
 	}
 
-	protected void disableAndEnableButtons() {
+	protected void disableAndEnableButtonsLeftRightAndSave() {
 		btnUserRegister_Left.setEnabled(false);
 		btnUserRegister_Right.setEnabled(false);
 		btnUserRegister_Save.setEnabled(true);
@@ -317,6 +338,47 @@ public class RegisterUserView {
 		} else if (email.isEmpty()) {
 			showErrorAndFocus("Por favor, preencha todos os campos obrigatórios. (O E-mail é obrigatório)", emailField);
 		}
+	}
+
+	public void loadUserInfoFromID(String idUser) {
+		if (!idUser.isEmpty()) {
+			Long userId = Long.parseLong(idUser);
+
+			User user = userController.getUserById(userId);
+			if (user != null) {
+				textFieldUserRegister_Name.setText(user.getName());
+				textFieldUserRegister_Username.setText(user.getUsername());
+				passwordFieldUserRegister_Password.setText(user.getPassword());
+				textFieldUserRegister_Email.setText(user.getEmail());
+				blocksTheFields();
+				enableButtonsAddLeftRightEditAndSave();
+			} else {
+				textFieldUserRegister_Name.setText("");
+				textFieldUserRegister_Username.setText("");
+				passwordFieldUserRegister_Password.setText("");
+				passwordFieldUserRegister_ConfirmPassword.setText("");
+				textFieldUserRegister_Email.setText("");
+				formattedTextFieldUserRegister_Search.setText("");
+				formattedTextFieldUserRegister_Search.requestFocusInWindow();
+				JOptionPane.showMessageDialog(frameUserRegister, "Usuário não encontrado!", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	public void blocksTheFields() {
+		textFieldUserRegister_Name.setEnabled(false);
+		textFieldUserRegister_Username.setEnabled(false);
+		passwordFieldUserRegister_Password.setEnabled(false);
+		passwordFieldUserRegister_ConfirmPassword.setEnabled(false);
+		textFieldUserRegister_Email.setEnabled(false);
+	}
+
+	protected void enableButtonsAddLeftRightEditAndSave() {
+		btnUserRegister_Add.setEnabled(true);
+		btnUserRegister_Left.setEnabled(true);
+		btnUserRegister_Right.setEnabled(true);
+		btnUserRegister_Edit.setEnabled(true);
 	}
 
 }
