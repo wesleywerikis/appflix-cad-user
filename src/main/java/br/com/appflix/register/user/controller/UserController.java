@@ -13,19 +13,27 @@ public class UserController {
 		this.userDao = new UserDao();
 	}
 
-	public void addUser(User user) {
-		try {
-			userDao.insertUser(user);
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public int addUser(User user) {
+		int userId = userDao.saveUser(user);
+		if (userId == -1) {
+			System.err.println("Failed to add user.");
 		}
+		return userId;
 	}
 
 	public User getUserById(Long id) {
-		try {
-			return UserDao.getUserById(id);
-		} catch (NumberFormatException e) {
-			return null;
+		User user = userDao.getUserById(id);
+		if (user == null) {
+			System.err.println("User not found.");
 		}
+		return user;
+	}
+	
+	public boolean updateUser(User user) {
+		return userDao.updateUser(user);
+	}
+
+	public boolean deleteUser(Long id) {
+		return userDao.deleteUser(id);
 	}
 }
