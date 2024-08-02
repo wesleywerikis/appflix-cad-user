@@ -1,38 +1,31 @@
 package br.com.appflix.register.user.view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.text.NumberFormat;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
-import javax.swing.text.NumberFormatter;
-
-import br.com.appflix.register.user.controller.UserController;
-import br.com.appflix.register.user.entity.User;
-
-import javax.swing.UIManager;
-import javax.swing.JPasswordField;
-import javax.swing.JFormattedTextField;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.border.LineBorder;
 import java.awt.Cursor;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+
+import br.com.appflix.register.user.controller.UserController;
 
 public class RegisterUserView {
 
@@ -54,9 +47,9 @@ public class RegisterUserView {
 	private JButton btnUserRegister_Save;
 	private JButton btnUserRegister_Add;
 	private JFormattedTextField formattedTextFieldUserRegister_Search;
+	private JButton btnUserRegister_Clean;
 
 	private UserController userController;
-	private JButton btnUserRegister_Clean;
 
 	/**
 	 * Launch the application.
@@ -108,8 +101,6 @@ public class RegisterUserView {
 		formattedTextFieldUserRegister_Search.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				String idUser = formattedTextFieldUserRegister_Search.getText();
-				loadUserInfoFromID(idUser);
 			}
 		});
 		formattedTextFieldUserRegister_Search.setForeground(new Color(57, 62, 70));
@@ -123,11 +114,7 @@ public class RegisterUserView {
 		btnUserRegister_Add = new JButton("");
 		btnUserRegister_Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				formattedTextFieldUserRegister_Search.setEnabled(false);
 
-				disableAndEnableButtonsLeftRightAndSave();
-
-				enableTextFieldDataUser();
 			}
 		});
 		btnUserRegister_Add.setIcon(new ImageIcon(RegisterUserView.class.getResource("/resources/img/button/add.png")));
@@ -158,8 +145,6 @@ public class RegisterUserView {
 		btnUserRegister_Edit = new JButton("");
 		btnUserRegister_Edit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				enableTextFieldDataUser();
-				btnUserRegister_Save.setEnabled(true);
 			}
 		});
 		
@@ -167,7 +152,6 @@ public class RegisterUserView {
 		btnUserRegister_Clean.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				clearFieldsAndFocusOnIdTextField();
 			}
 		});
 		btnUserRegister_Clean.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -222,23 +206,6 @@ public class RegisterUserView {
 					return;
 				}
 				
-				User user = new User();
-		        user.setName(name);
-		        user.setUsername(username);
-		        user.setPassword(password);
-		        user.setEmail(email);
-
-		        int userId = userController.addUser(user);
-
-		        if (userId != -1) {
-		            JOptionPane.showMessageDialog(frameUserRegister, "Usuário cadastrado com sucesso! ID: " + userId, " Sucesso",
-		                    JOptionPane.INFORMATION_MESSAGE);
-		            clearFieldsAndFocusOnIdTextField();
-		        } else {
-		            JOptionPane.showMessageDialog(frameUserRegister, "Falha ao cadastrar o usuário.", "Erro",
-		                    JOptionPane.ERROR_MESSAGE);
-		        }
-
 			}
 		});
 		btnUserRegister_Save.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -338,46 +305,6 @@ public class RegisterUserView {
 		panelRegisterUser_DataUser.add(textFieldUserRegister_Email);
 	}
 
-	protected void clearFieldsAndFocusOnIdTextField() {
-		formattedTextFieldUserRegister_Search.setText("");
-		textFieldUserRegister_Name.setText("");
-		textFieldUserRegister_Username.setText("");
-		passwordFieldUserRegister_Password.setText("");
-		passwordFieldUserRegister_ConfirmPassword.setText("");
-		textFieldUserRegister_Email.setText("");
-		
-		formattedTextFieldUserRegister_Search.requestFocus();
-		
-		disableEditDeleteSaveButtonsAndEnableTextFieldId();
-	}
-
-	private void disableEditDeleteSaveButtonsAndEnableTextFieldId() {
-		btnUserRegister_Edit.setEnabled(false);
-		btnUserRegister_Delete.setEnabled(false);
-		btnUserRegister_Save.setEnabled(false);
-		btnUserRegister_Left.setEnabled(true);
-		btnUserRegister_Right.setEnabled(true);
-		formattedTextFieldUserRegister_Search.setEnabled(true);
-		formattedTextFieldUserRegister_Search.requestFocus();
-	}
-
-	protected void disableAndEnableButtonsLeftRightAndSave() {
-		btnUserRegister_Left.setEnabled(false);
-		btnUserRegister_Right.setEnabled(false);
-		btnUserRegister_Save.setEnabled(true);
-	}
-
-	protected void enableTextFieldDataUser() {
-
-		textFieldUserRegister_Name.setEnabled(true);
-		textFieldUserRegister_Username.setEnabled(true);
-		passwordFieldUserRegister_Password.setEnabled(true);
-		passwordFieldUserRegister_ConfirmPassword.setEnabled(true);
-		textFieldUserRegister_Email.setEnabled(true);
-
-		textFieldUserRegister_Name.requestFocus();
-	}
-
 	private void showErrorAndFocus(String message, JComponent component) {
 		JOptionPane.showMessageDialog(frameUserRegister, message, "Erro", JOptionPane.ERROR_MESSAGE);
 		component.requestFocus();
@@ -403,44 +330,4 @@ public class RegisterUserView {
 		}
 	}
 
-	public void loadUserInfoFromID(String idUser) {
-		if (!idUser.isEmpty()) {
-			Long userId = Long.parseLong(idUser);
-
-			User user = userController.getUserById(userId);
-			if (user != null) {
-				textFieldUserRegister_Name.setText(user.getName());
-				textFieldUserRegister_Username.setText(user.getUsername());
-				passwordFieldUserRegister_Password.setText(user.getPassword());
-				textFieldUserRegister_Email.setText(user.getEmail());
-				blocksTheFields();
-				enableButtonsAddLeftRightEditAndSave();
-			} else {
-				textFieldUserRegister_Name.setText("");
-				textFieldUserRegister_Username.setText("");
-				passwordFieldUserRegister_Password.setText("");
-				passwordFieldUserRegister_ConfirmPassword.setText("");
-				textFieldUserRegister_Email.setText("");
-				formattedTextFieldUserRegister_Search.setText("");
-				formattedTextFieldUserRegister_Search.requestFocusInWindow();
-				JOptionPane.showMessageDialog(frameUserRegister, "Usuário não encontrado!", "Erro",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
-	public void blocksTheFields() {
-		textFieldUserRegister_Name.setEnabled(false);
-		textFieldUserRegister_Username.setEnabled(false);
-		passwordFieldUserRegister_Password.setEnabled(false);
-		passwordFieldUserRegister_ConfirmPassword.setEnabled(false);
-		textFieldUserRegister_Email.setEnabled(false);
-	}
-
-	protected void enableButtonsAddLeftRightEditAndSave() {
-		btnUserRegister_Add.setEnabled(true);
-		btnUserRegister_Left.setEnabled(true);
-		btnUserRegister_Right.setEnabled(true);
-		btnUserRegister_Edit.setEnabled(true);
-	}
 }
